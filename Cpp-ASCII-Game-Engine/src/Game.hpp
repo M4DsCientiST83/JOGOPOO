@@ -21,8 +21,7 @@ class Game
         
             Menu menu("Menu", Sprite ("rsc/Sprites/StartScreen.img"));
             WeaponSelect weaponselection("WeaponSelect", Sprite ("rsc/Sprites/Weapons.img"));
-            //FaseLevel1 fase1("Fase1",Sprite("rsc/fase2.img"));
-            //FaseFinal faseFinal("Fase1",Sprite("rsc/title1Gothic.img"));
+
             
             int r1 = menu.run(buffer), r2;
             buffer.clear();
@@ -44,18 +43,7 @@ class Game
             }
 
 
-            //fase1.init();
-            //int ret1 = fase1.run(buffer);
-            //if ( ret1 != Fase::GAME_OVER && ret1 != Fase::END_GAME){
             
-                //buffer.clear();
-                //faseFinal.init();
-                //faseFinal.run(buffer);
-            //}
-            //else
-                //std::cout << "GAME OVER" << std::endl;
-            
-            //std::cout << "Saindo..." << std::endl;
         }
 
 };
