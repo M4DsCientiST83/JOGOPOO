@@ -1,8 +1,12 @@
 #include <iostream>
 
+#include "Game.hpp"
+
 int main()
 {
-	std::cout << "Eu te amo Bibgrafo <3" << std::endl;
+	
+	Game::run();
+
 
 	return 0;
 }

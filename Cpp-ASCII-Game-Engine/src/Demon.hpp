@@ -7,7 +7,7 @@ class Demon : public Monster
 {
     public:
 
-        Demon(const ObjetoDeJogo &obj, int lf=10, int def=2, int dmg=20) : Monster(obj, lf, def, dmg) {}
+        Demon(const ObjetoDeJogo &obj, int lf=10, int def=2, int dmg=10) : Monster(obj, lf, def, dmg) {}
 };
 
 #endif

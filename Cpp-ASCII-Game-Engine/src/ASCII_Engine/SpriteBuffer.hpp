@@ -12,7 +12,7 @@ class SpriteBuffer : public SpriteBase
 	
 	friend std::ostream &operator<<(std::ostream &, const SpriteBuffer &);
 public:
-	SpriteBuffer(unsigned = 0, unsigned = 0, char = ' ', COR::Cor = COR::PADRAO);
+	SpriteBuffer(unsigned = 0, unsigned = 0, char = ' ', COR::Cor = COR::VERMELHA);
 	virtual ~SpriteBuffer(){}
 	
 	void clear();
