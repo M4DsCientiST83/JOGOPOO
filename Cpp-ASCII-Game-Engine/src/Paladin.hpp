@@ -9,24 +9,24 @@ class Paladin : public ObjetoDeJogo
     public:
 
         Paladin(const ObjetoDeJogo &obj, std::string weapon) 
-        : ObjetoDeJogo(obj), life(50), canCure(false), defense(0), damage(0) 
+        : ObjetoDeJogo(obj), life(100), canCure(false), defense(0), damage(0) 
         {
             if (weapon == "Axe")
             {
-                damage = 10;
+                damage = 12;
                 defense = 3;
                 life += 15;
             }
             else if (weapon == "Sword")
             {
-                damage = 9;
-                defense = 4;
+                damage = 10;
+                defense = 6;
                 life += 10;
             }
             else if (weapon == "Rapier")
             {
                 damage = 8;
-                defense == 6;
+                defense = 8;
             }
         }
 
@@ -35,8 +35,9 @@ class Paladin : public ObjetoDeJogo
         bool isAlive() const {return life != 0;}
         int getLife() const {return life;}
         int getDefense() const {return defense;}
+        int getDamage() const {return damage;}
         
-        void endureAttack(int attack) {life = (life - attack >= 0) ? (life - attack):0;}
+        void endureAttack(int attack) {life = (life - (attack-defense) >= 0) ? (life - (attack-defense)):0;}
 
         void buffDamage() {damage += 10;}
         int attack() const {return damage;}

@@ -2,133 +2,144 @@
 #include "Utilities.hpp"
 
 #include <iostream>
+#include <random>
 
 
 void Fase1::init()
 {	
-	//Objetos de jogo
-    demon[0] = new Demon(ObjetoDeJogo("Demon", Sprite("rsc/Sprites/DemonMelee.img"), 73, 22));
-    objs.push_back(demon[0]);
 
     if (paladin_weapon == "Axe")
     {
-        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/HeroAxe.img"), 36, 22), paladin_weapon);
-        objs.push_back(paladin);
+		paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinAxe.img"), 30, 36), paladin_weapon);
+    	objs.push_back(paladin);
     }
 	
     else if (paladin_weapon == "Sword")
     {
-        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/HeroSword.img"), 36, 22), paladin_weapon);
+        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinSword.img"), 30, 36), paladin_weapon);
         objs.push_back(paladin);
     }
 
     else if (paladin_weapon == "Rapier")
     {
-        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/HeroRapier.img"), 36, 22), paladin_weapon);
+        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinRapier.img"), 30, 36), paladin_weapon);
         objs.push_back(paladin);
     }
+	
+	demon[0] = new Demon(ObjetoDeJogo("Demon", Sprite("rsc/Sprites/DemonMelee.img"), 22, 70));
+    objs.push_back(demon[0]);
 
 }
 
 unsigned Fase1::run(SpriteBuffer &screen)
 {
+
 	char ent;
 
 	draw(screen);
 	system("clear");
 	show(screen);
+	std::cout << "LIFE: " << paladin->getLife() 
+	<< "      DEFENSE: " << paladin->getDefense() 
+	<< "      ATTACK: " << paladin->getDamage()
+	<<std::endl;
 
-    ent = captureKey();
-	
-    if (ent == 'q')
-        return Fase::END_GAME;
+	int killed = 0, n_demon = 1;
 
 
-	//while (true)
-	//{
-		//lendo entrada
-		//getline(std::cin,ent);
+	while (true)
+	{
+		ent = captureKey();
+
+		//keyboard actions
+		int posL = paladin->getPosL(), posC = paladin->getPosC();
 		
-		//processando entradas
-		//int posL = hero->getPosL(), posC = hero->getPosC();
+		if (ent == 'w' && paladin->getPosL() > 1)
+			paladin->moveUp(1);
+
+		else if (ent == 'a' && paladin->getPosC() > 1)
+			paladin->moveLeft(1);
+
+		else if (ent == 's' && paladin->getPosL() < 31)
+			paladin->moveDown(1);
+
 		
-		//if (ent == "w" && hero->getPosL() > 10)
-		//	hero->moveUp(3);
-		//else if (ent == "s" && hero->getPosL() < screen.getAltura() - 15)
-		//	hero->moveDown(3);
-		//else if (ent == "a" && hero->getPosC() > 12)
-		//	hero->moveLeft(3);
-		//else if (ent == "d" && hero->getPosC() < screen.getLargura() - hero->getSprite()->getLargura() - 13)
-		//	hero->moveRight(3);
-		//else if (ent == "x") {
-		//	for (int g = 0 ; g < 2 ; g++)
-		//		if (hero->colideCom(*guardas[g])) {
-		//			guardas[g]->sofrerAtaque(hero->atacar());
-		//			if (!guardas[g]->isAlive())
-		//				guardas[g]->desativarObj();
-		//		}
-		//}
-		//else if (ent == "q")
-		//	return Fase::END_GAME;
+		else if (ent == 'd' && paladin->getPosC() < 67)
+			paladin->moveRight(1);
 			
+		else if (ent == 'p') 
+		{
+			for (int d = 0 ; d < n_demon ; d++)
+				if (paladin->colideCom(*demon[d])) 
+				{
+					demon[d]->endureAttack(paladin->attack());
+					if (!demon[d]->isAlive())
+					{
+						killed++;
+						demon[d]->desativarObj();
+					}
+				}
+		}
 
-		//if (colideComBloco()) 
-		//	hero->moveTo(posL,posC);
+		else if (ent == 'q')
+			return Fase::END_GAME;
+			
 		
-		
-		//processando eventos
-		//for (int g = 0 ; g < 2 ; g++)
-		//		if (hero->colideCom(*guardas[g])) {
-		//			hero->sofrerAtaque(guardas[g]->atacar());
+		//npc events
+		for (int d = 0; d < n_demon; d++)
+		{
+			if (demon[d] != nullptr)
+				demon[d]->moveToPaladin(posL, posC);
+		}
+
+
+		for (int d = 0 ; d < n_demon ; d++)
+			if (paladin->colideCom(*demon[d])) 
+			{
+				paladin->endureAttack(demon[d]->attack());
 					
-		//			if (!hero->isAlive())
-		//				return Fase::GAME_OVER;
-		//			
-		//			life->setText(std::string(hero->getLife()/5,'#'));
-		//		}
+				if (!paladin->isAlive())
+					return Fase::GAME_OVER;
+			}
 		
-		//if (hero->colideCom(*chave))
-		//{
-		//	chave->desativarObj();
-		//	miniChave->ativarObj();
-		//	hero->pegarChave();
-		//}
-		//else if (hero->colideCom(*tapetePorta) && hero->possuiChave())
-		//{
-		//	porta->openTheDoor();
-		//}
-		//else if (hero->colideCom(*princesa))
-		//{
-		//	princesa->desativarObj();
-		//	hero->salvarPrincesa();
-		//}
-		//else if (hero->colideCom(*portao) && hero->salvouPrincesa())
-		//{
-		//	return Fase::LEVEL_COMPLETE;
-		//}
-		
-		
-		//padrão
-		//update();
-		//draw(screen);
-		//system("clear");
-		//show(screen);
-	//}
 
-	
-	
+		if (killed == 10)
+			return Fase::LEVEL_COMPLETE;
+
+
+		std::random_device rd; 
+		std::mt19937 gen(rd()); 
+		std::uniform_int_distribution<> distrib(1, 20);
+		std::uniform_int_distribution<> distribL(1, 31);
+		std::uniform_int_distribution<> distribC(1, 72);
+
+		int number = distrib(gen), randL = distribL(gen), randC = distribC(gen);
+
+		if (number == 1 && n_demon < 10)
+		{
+			demon[n_demon] = new Demon(ObjetoDeJogo("Demon", Sprite("rsc/Sprites/DemonMelee.img"), randL, randC));
+			objs.push_back(demon[n_demon]);
+			n_demon++;
+		}
+
+
+		//level uptade
+		update();
+		draw(screen);
+		system("clear");
+		show(screen);
+		std::cout << "LIFE: " << paladin->getLife() 
+		<< "      DEFENSE: " << paladin->getDefense() 
+		<< "      ATTACK: " << paladin->getDamage()
+		<< std::endl;
+	}
+
 	return Fase::END_GAME; 
+
 }
 
 bool Fase1::colideComBloco() const
 {
-	//for (auto it = colisoes.begin() ; it != colisoes.end() ; ++it)
-	//	if (hero->colideCom(**it)) {
-	//		return true;
-	//	}
-	
-	//if (hero->colideCom(*porta) && !porta->isOpen() )
-	//	return true;
 	
 	return false;
 }

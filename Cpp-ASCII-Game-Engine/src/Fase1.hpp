@@ -15,8 +15,7 @@ class Fase1 : public Fase
 
     public:
 
-        Fase1(std::string name, const Sprite &bkg, const std::string wp) : Fase(name,bkg), paladin_weapon(wp) {}
-        Fase1(std::string name, const SpriteAnimado &bkg) : Fase(name,bkg) {}
+        Fase1(std::string name, const Sprite &bkg) : Fase(name,bkg) {}
 
         virtual ~Fase1() {}
         
@@ -25,6 +24,7 @@ class Fase1 : public Fase
         virtual unsigned run(SpriteBuffer &screen);
 
         std::string getPaladinWeapon() const {return paladin_weapon;}
+        void setPaladinWeapon(std::string Weapon) {paladin_weapon = Weapon;}
 
         bool colideComBloco() const;
         

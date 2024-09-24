@@ -17,7 +17,7 @@ class Game
         
         static void run()
         {
-            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(79,40);
+            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(78,35);
         
             Menu menu("Menu", Sprite ("rsc/Sprites/StartScreen.img"));
             WeaponSelect weaponselection("WeaponSelect", Sprite ("rsc/Sprites/Weapons.img"));
@@ -33,13 +33,21 @@ class Game
                 buffer2.clear();
             }
             
-            if (r2 == Fase::LEVEL_COMPLETE)
+            if (r1 == Fase::LEVEL_COMPLETE && r2 != Fase::END_GAME)
             {
-                std::string weapon = weaponselection.getWeapon();
-                Fase1 fase1("Fase1",Sprite ("rsc/Sprites/Scene.img"), weapon);
+                Fase1 fase1("Fase1",Sprite ("rsc/Sprites/Scene.img"));
+
+                if (r2 == 1)
+                    fase1.setPaladinWeapon("Axe");
+
+                else if (r2 == 2)
+                    fase1.setPaladinWeapon("Sword");
+
+                else if (r2 == 3)
+                    fase1.setPaladinWeapon("Rapier");
+
                 fase1.init();
                 fase1.run(buffer3);
-                buffer2.clear();
             }
 
             //fase1.init();

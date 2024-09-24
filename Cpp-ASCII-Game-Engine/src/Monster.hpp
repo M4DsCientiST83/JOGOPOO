@@ -16,13 +16,51 @@ class Monster : public ObjetoDeJogo
         
         void endureAttack(int attack) 
         {
-            life = (life - attack >= 0) ? (life - attack):0;
+            life = (life - (attack-defense) >= 0) ? (life - (attack-defense)):0;
         }
         
         int attack() 
         { 
             return damage;
         }
+
+        void moveToPaladin(int pL, int pC) 
+        {
+            int l_diff, c_diff;
+
+            if (getPosL() >= pL)
+                l_diff = getPosL() - pL;
+            
+            else 
+                l_diff = pL - getPosL();
+
+            if (getPosC() >= pC)
+                c_diff = getPosC() - pC;
+
+            else 
+                c_diff = pC - getPosC();
+
+
+            if (l_diff >= c_diff)
+            {
+                if (getPosL() < pL)
+                    moveDown(1);
+                
+                else if (getPosL() > pL)
+                    moveUp(1);
+            }
+            
+            else 
+            {
+                if (getPosC() < pC)
+                    moveRight(1);
+                
+                else if (getPosC() > pC)
+                    moveLeft(1);
+            }
+                
+        }
+
 
         void setLife(int lf) {life = lf;}
         int getLife() const {return life;}

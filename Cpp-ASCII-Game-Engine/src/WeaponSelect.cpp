@@ -3,7 +3,7 @@
 
 void WeaponSelect::init()
 {
-    weapon_selected = "none";
+    selected = true;
 }
 
 unsigned WeaponSelect::run(SpriteBuffer &screen)
@@ -22,20 +22,17 @@ unsigned WeaponSelect::run(SpriteBuffer &screen)
 
 		if (ent == 'a')
         {
-            weapon_selected == "Axe";
-            return Fase::LEVEL_COMPLETE;
+            return 1;
         }
             
 		else if (ent == 's')
         {
-            weapon_selected == "Sword";
-            return Fase::LEVEL_COMPLETE;
+            return 2;
         }
             
         else if (ent == 'r')
         {
-            weapon_selected == "Rapier";
-            return Fase::LEVEL_COMPLETE;
+            return 3;
         }
 	}
 	
