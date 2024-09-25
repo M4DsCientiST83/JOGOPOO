@@ -1,114 +1,141 @@
 #include "Fase2.hpp"
-//#include "Enemy.hpp"
+#include "Utilities.hpp"
 
 #include <iostream>
+#include <random>
+
 
 void Fase2::init()
 {	
-	//Objetos de jogo
-	//princesa = new ObjetoDeJogo("Princess",SpriteAnimado("rsc/littlePrincess.anm",2),16,196);
-	//objs.push_back(princesa);
+
+    if (paladin_weapon == "Axe")
+    {
+		paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinAxe.img"), posL, posC), paladin_weapon);
+    	objs.push_back(paladin);
+    }
 	
-	
-	
-	//blocos
-	//objs.push_back(new ObjetoDeJogo("B1",Sprite("rsc/castleBlock1.img"),18,38));
-	//colisoes.push_back(objs.back());
-	
+    else if (paladin_weapon == "Sword")
+    {
+        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinSword.img"), posL, posC), paladin_weapon);
+        objs.push_back(paladin);
+    }
+
+    else if (paladin_weapon == "Rapier")
+    {
+        paladin = new Paladin(ObjetoDeJogo("Paladin", Sprite("rsc/Sprites/paladinRapier.img"), posL, posC), paladin_weapon);
+        objs.push_back(paladin);
+    }
+	paladin->setLife(paladinLife);
+	paladin->setCanCure();
+
+	demonboss = new DemonBoss(ObjetoDeJogo("DemonBoss", Sprite("rsc/Sprites/DemonBoss.img"), 12, 7));
+    objs.push_back(demonboss);
+
 }
 
 unsigned Fase2::run(SpriteBuffer &screen)
 {
-	std::string ent;
-	
-	//padrão
+
+	char ent;
+
+	int count_paladin_cure = 5, count_demonboss_cure = 5;
+
 	draw(screen);
 	system("clear");
 	show(screen);
-	
+	std::cout << "LIFE: " << paladin->getLife() 
+	<< "      DEFENSE: " << paladin->getDefense() 
+	<< "      ATTACK: " << paladin->getDamage()
+	<< "	  BOSS HP: " << demonboss->getLife()
+	<<std::endl;
+
+
 	while (true)
 	{
-		//lendo entrada
-		getline(std::cin,ent);
-		
-		//processando entradas
-		//int posL = hero->getPosL(), posC = hero->getPosC();
-		
-		//if (ent == "w" && hero->getPosL() > 10)
-		//	hero->moveUp(3);
-		//else if (ent == "s" && hero->getPosL() < screen.getAltura() - 15)
-		//	hero->moveDown(3);
-		//else if (ent == "a" && hero->getPosC() > 12)
-		//	hero->moveLeft(3);
-		//else if (ent == "d" && hero->getPosC() < screen.getLargura() - hero->getSprite()->getLargura() - 13)
-		//	hero->moveRight(3);
-		//else if (ent == "x") {
-		//	for (int g = 0 ; g < 2 ; g++)
-		//		if (hero->colideCom(*guardas[g])) {
-		//			guardas[g]->sofrerAtaque(hero->atacar());
-		//			if (!guardas[g]->isAlive())
-		//				guardas[g]->desativarObj();
-		//		}
-		//}
-		//else if (ent == "q")
-		//	return Fase::END_GAME;
-			
+		ent = captureKey();
 
-		//if (colideComBloco()) 
-		//	hero->moveTo(posL,posC);
+		//keyboard actions
+		int posL = paladin->getPosL(), posC = paladin->getPosC();
 		
+		if (ent == 'w' && paladin->getPosL() > 1)
+			paladin->moveUp(1);
+
+		else if (ent == 'a' && paladin->getPosC() > 1)
+			paladin->moveLeft(1);
+
+		else if (ent == 's' && paladin->getPosL() < 41)
+			paladin->moveDown(1);
+
 		
-		//processando eventos
-		//for (int g = 0 ; g < 2 ; g++)
-		//		if (hero->colideCom(*guardas[g])) {
-		//			hero->sofrerAtaque(guardas[g]->atacar());
-					
-		//			if (!hero->isAlive())
-		//				return Fase::GAME_OVER;
-		//			
-		//			life->setText(std::string(hero->getLife()/5,'#'));
-		//		}
+		else if (ent == 'd' && paladin->getPosC() < 67)
+			paladin->moveRight(1);
+			
+		else if (ent == 'p') 
+		{
+			if (paladin->colideCom(*demonboss)) 
+			{
+				demonboss->endureAttack(paladin->attack());
+				if (!demonboss->isAlive())
+				{
+					demonboss->desativarObj();
+					return Fase::LEVEL_COMPLETE;
+				}
+			}
+		}
+
+		else if (ent == 'l')
+		{
+			if (count_paladin_cure > 0)
+			{
+				paladin->cure();
+				count_paladin_cure--;
+			}
+		}
+
+		else if (ent == 'q')
+			return Fase::END_GAME;
+			
 		
-		//if (hero->colideCom(*chave))
-		//{
-		//	chave->desativarObj();
-		//	miniChave->ativarObj();
-		//	hero->pegarChave();
-		//}
-		//else if (hero->colideCom(*tapetePorta) && hero->possuiChave())
-		//{
-		//	porta->openTheDoor();
-		//}
-		//else if (hero->colideCom(*princesa))
-		//{
-		//	princesa->desativarObj();
-		//	hero->salvarPrincesa();
-		//}
-		//else if (hero->colideCom(*portao) && hero->salvouPrincesa())
-		//{
-		//	return Fase::LEVEL_COMPLETE;
-		//}
-		
-		
-		//padrão
+		//npc events
+
+		if (demonboss->getLife() < 20 && count_demonboss_cure > 0)
+		{
+			demonboss->moveAway(posL, posC);
+			demonboss->cure();
+			count_demonboss_cure--;
+		}
+
+		else if (demonboss->getLife() >= 20 || count_demonboss_cure <= 0)
+			demonboss->moveToPaladin(posL, posC);
+
+
+		if (paladin->colideCom(*demonboss)) 
+		{
+			paladin->endureAttack(demonboss->attack());
+				
+			if (!paladin->isAlive())
+				return Fase::GAME_OVER;
+		}
+
+
+		//level uptade
 		update();
 		draw(screen);
 		system("clear");
 		show(screen);
+		std::cout << "LIFE: " << paladin->getLife() 
+		<< "      DEFENSE: " << paladin->getDefense() 
+		<< "      ATTACK: " << paladin->getDamage()
+		<< "	  BOSS HP: " << demonboss->getLife()
+		<< std::endl;
 	}
-	
-	return Fase::END_GAME; // não necessário
+
+	return Fase::END_GAME; 
+
 }
 
 bool Fase2::colideComBloco() const
 {
-	//for (auto it = colisoes.begin() ; it != colisoes.end() ; ++it)
-	//	if (hero->colideCom(**it)) {
-	//		return true;
-	//	}
-	
-	//if (hero->colideCom(*porta) && !porta->isOpen() )
-	//	return true;
 	
 	return false;
 }

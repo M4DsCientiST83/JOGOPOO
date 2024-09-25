@@ -13,20 +13,21 @@ class Paladin : public ObjetoDeJogo
         {
             if (weapon == "Axe")
             {
-                damage = 12;
+                damage = 16;
                 defense = 3;
-                life += 15;
+                life += 50;
             }
             else if (weapon == "Sword")
             {
-                damage = 10;
-                defense = 6;
-                life += 10;
+                damage = 14;
+                defense = 5;
+                life += 25;
             }
             else if (weapon == "Rapier")
             {
-                damage = 8;
+                damage = 12;
                 defense = 8;
+                life += 10;
             }
         }
 
@@ -42,9 +43,10 @@ class Paladin : public ObjetoDeJogo
         void buffDamage() {damage += 10;}
         int attack() const {return damage;}
 
-        void cure() {life += 10;}
+        void cure() {if (getCanCure()) {life += 10;}}
         bool getCanCure() const {return canCure;}
         void setCanCure() {canCure = true;}
+        void setLife(const int n) {life = n;}
         
     private:
 

@@ -61,6 +61,41 @@ class Monster : public ObjetoDeJogo
                 
         }
 
+        void moveAway(int pL, int pC) 
+        {
+            int l_diff, c_diff;
+
+            if (getPosL() >= pL)
+                l_diff = getPosL() - pL;
+            
+            else 
+                l_diff = pL - getPosL();
+
+            if (getPosC() >= pC)
+                c_diff = getPosC() - pC;
+
+            else 
+                c_diff = pC - getPosC();
+
+
+            if (l_diff >= c_diff)
+            {
+                if (getPosL() < pL)
+                    moveUp(2);
+                
+                else if (getPosL() > pL)
+                    moveDown(2);
+            }
+            
+            else 
+            {
+                if (getPosC() < pC)
+                    moveLeft(2);
+                
+                else if (getPosC() > pC)
+                    moveRight(2);
+            }
+        }
 
         void setLife(int lf) {life = lf;}
         int getLife() const {return life;}

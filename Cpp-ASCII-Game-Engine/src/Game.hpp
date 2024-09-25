@@ -17,13 +17,13 @@ class Game
         
         static void run()
         {
-            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(78,35);
+            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(78,45);
         
             Menu menu("Menu", Sprite ("rsc/Sprites/StartScreen.img"));
             WeaponSelect weaponselection("WeaponSelect", Sprite ("rsc/Sprites/Weapons.img"));
 
             
-            int r1 = menu.run(buffer), r2;
+            int r1 = menu.run(buffer), r2, r3, r4;
             buffer.clear();
 
 
@@ -35,7 +35,7 @@ class Game
             
             if (r1 == Fase::LEVEL_COMPLETE && r2 != Fase::END_GAME)
             {
-                Fase1 fase1("Fase1",Sprite ("rsc/Sprites/Scene.img"));
+                Fase1 fase1("Fase1",Sprite("rsc/Sprites/Scene.img"));
 
                 if (r2 == 1)
                     fase1.setPaladinWeapon("Axe");
@@ -47,9 +47,23 @@ class Game
                     fase1.setPaladinWeapon("Rapier");
 
                 fase1.init();
-                fase1.run(buffer3);
-            }
+                r3 = fase1.run(buffer3);
 
+                if (r3 == Fase::LEVEL_COMPLETE)
+                {
+                    Fase2 fase2("Fase2", Sprite("rsc/Sprites/Scene.img"));
+
+                    fase2.setPaladinWeapon(fase1.getPaladinWeapon());
+                    fase2.setPaladinLife(fase1.getPaladinLife());
+                    fase2.setPosL(fase1.getPosL());
+                    fase2.setPosC(fase1.getPosC());
+
+                    fase2.init();
+                    r4 = fase2.run(buffer3);
+                }
+                
+
+            }
             //fase1.init();
             //int ret1 = fase1.run(buffer);
             //if ( ret1 != Fase::GAME_OVER && ret1 != Fase::END_GAME){

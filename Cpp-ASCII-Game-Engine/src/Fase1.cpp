@@ -60,7 +60,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 		else if (ent == 'a' && paladin->getPosC() > 1)
 			paladin->moveLeft(1);
 
-		else if (ent == 's' && paladin->getPosL() < 31)
+		else if (ent == 's' && paladin->getPosL() < 41)
 			paladin->moveDown(1);
 
 		
@@ -104,7 +104,12 @@ unsigned Fase1::run(SpriteBuffer &screen)
 		
 
 		if (killed == 10)
+		{
+			setPaladinLife(paladin->getLife());
+			setPosL(posL);
+			setPosC(posC);
 			return Fase::LEVEL_COMPLETE;
+		}
 
 
 		std::random_device rd; 

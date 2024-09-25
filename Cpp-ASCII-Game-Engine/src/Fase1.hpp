@@ -26,11 +26,21 @@ class Fase1 : public Fase
         std::string getPaladinWeapon() const {return paladin_weapon;}
         void setPaladinWeapon(std::string Weapon) {paladin_weapon = Weapon;}
 
+        int getPaladinLife() const {return paladinLife;}
+        void setPaladinLife(int Life) {paladinLife = Life;}
+
+        void setPosL(int pl) {posL = pl;}
+        void setPosC(int pc) {posC = pc;}
+
+        int getPosL() const {return posL;}
+        int getPosC() const {return posC;} 
+
         bool colideComBloco() const;
         
     private:
 
         std::string paladin_weapon;
+        int paladinLife, posL, posC;
         Paladin *paladin; 
         Demon *demon[10];
 
