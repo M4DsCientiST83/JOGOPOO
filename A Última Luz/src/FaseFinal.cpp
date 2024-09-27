@@ -123,13 +123,10 @@ unsigned FaseFinal::run(SpriteBuffer &screen)
         }  
 
 		if (paladin->colideCom(*dragon)) 
-		{
 			paladin->endureAttack(dragon->attack());
 				
-			if (!paladin->isAlive())
-				return Fase::GAME_OVER;
-		}
-
+		if (!paladin->isAlive())
+			return Fase::GAME_OVER;
 
 		//level uptade
         slow++;

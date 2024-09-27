@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "Menu.hpp"
+#include "GameOver.hpp"
 #include "WeaponSelect.hpp"
 #include "Fase1.hpp"
 #include "Fase2.hpp"
@@ -17,10 +18,11 @@ class Game
         
         static void run()
         {
-            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(110,45);
+            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(110,45), buffer4(92,34);
         
             Menu menu("Menu", Sprite ("rsc/Sprites/StartScreen.img"));
             WeaponSelect weaponselection("WeaponSelect", Sprite ("rsc/Sprites/Weapons.img"));
+            GameOver gameover("GameOver", Sprite ("rsc/Sprites/Church.img"));
 
             
             int r1 = menu.run(buffer), r2, r3, r4, r5;
@@ -72,10 +74,27 @@ class Game
 
                         fasefinal.init();
                         r5 = fasefinal.run(buffer3);
+
+                        if (r5 == Fase::GAME_OVER)
+                        {
+                            gameover.init();
+                            gameover.run(buffer4);
+                        }
                     }
+                    else if (r4 == Fase::GAME_OVER)
+                    {
+                        gameover.init();
+                        gameover.run(buffer4);
+                    }
+                }
+                else if (r3 == Fase::GAME_OVER)
+                {
+                    gameover.init();
+                    gameover.run(buffer4);
                 }
 
             }
+            
         }
 
 };
