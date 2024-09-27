@@ -1,24 +1,22 @@
-#ifndef FASE2_HPP
-#define FASE2_HPP
+#ifndef FASEFINAL_HPP
+#define FASEFINAL_HPP
 
 #include "ASCII_Engine/Fase.hpp"
 #include "Paladin.hpp"
-#include "DemonBoss.hpp"
+#include "Dragon.hpp"
 
 #include <string>
 #include <list>
 
 
-
-class Fase2 : public Fase
+class FaseFinal : public Fase
 {
 
     public:
 
-        Fase2(std::string name, const Sprite &bkg) : Fase(name,bkg) {}
+        FaseFinal(std::string name, const Sprite &bkg) : Fase(name,bkg) {}
 
-        virtual ~Fase2() {}
-        
+        virtual ~FaseFinal() {}
         
         virtual void init();
         virtual unsigned run(SpriteBuffer &screen);
@@ -29,17 +27,17 @@ class Fase2 : public Fase
         void setPosL(int pl) {posL = pl;}
         void setPosC(int pc) {posC = pc;}
 
-        int getPosL() const {return posL;}
-        int getPosC() const {return posC;} 
-
-        bool colideComBloco() const;
+		virtual void draw(SpriteBase &screen, int x = 0, int y = 0) override;
         
     private:
 
         Paladin *paladin;
         int paladinLife, posL, posC;
         std::string paladin_weapon;
-        DemonBoss *demonboss;
+        
+		Dragon *dragon;
+
+		std::list<ObjetoDeJogo *> energyball;
 };
 
 #endif 

@@ -64,13 +64,13 @@ unsigned Fase1::run(SpriteBuffer &screen)
 			paladin->moveDown(1);
 
 		
-		else if (ent == 'd' && paladin->getPosC() < 67)
+		else if (ent == 'd' && paladin->getPosC() < 99)
 			paladin->moveRight(1);
 			
 		else if (ent == 'p') 
 		{
 			for (int d = 0 ; d < n_demon ; d++)
-				if (paladin->colideCom(*demon[d])) 
+				if (paladin->colideComBordas(*demon[d])) 
 				{
 					demon[d]->endureAttack(paladin->attack());
 					if (!demon[d]->isAlive())
@@ -83,7 +83,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 
 		else if (ent == 'q')
 			return Fase::END_GAME;
-			
+
 		
 		//npc events
 		for (int d = 0; d < n_demon; d++)
@@ -94,7 +94,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 
 
 		for (int d = 0 ; d < n_demon ; d++)
-			if (paladin->colideCom(*demon[d])) 
+			if (paladin->colideComBordas(*demon[d])) 
 			{
 				paladin->endureAttack(demon[d]->attack());
 					
@@ -116,7 +116,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 		std::mt19937 gen(rd()); 
 		std::uniform_int_distribution<> distrib(1, 20);
 		std::uniform_int_distribution<> distribL(1, 31);
-		std::uniform_int_distribution<> distribC(1, 72);
+		std::uniform_int_distribution<> distribC(1, 105);
 
 		int number = distrib(gen), randL = distribL(gen), randC = distribC(gen);
 
@@ -141,10 +141,4 @@ unsigned Fase1::run(SpriteBuffer &screen)
 
 	return Fase::END_GAME; 
 
-}
-
-bool Fase1::colideComBloco() const
-{
-	
-	return false;
 }

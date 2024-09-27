@@ -14,14 +14,14 @@ class Paladin : public ObjetoDeJogo
             if (weapon == "Axe")
             {
                 damage = 16;
-                defense = 3;
-                life += 50;
+                defense = 4;
+                life += 100;
             }
             else if (weapon == "Sword")
             {
                 damage = 14;
-                defense = 5;
-                life += 25;
+                defense = 6;
+                life += 50;
             }
             else if (weapon == "Rapier")
             {

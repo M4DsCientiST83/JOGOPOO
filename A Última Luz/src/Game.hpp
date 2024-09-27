@@ -17,13 +17,13 @@ class Game
         
         static void run()
         {
-            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(78,45);
+            SpriteBuffer buffer(110,45), buffer2(99,36), buffer3(110,45);
         
             Menu menu("Menu", Sprite ("rsc/Sprites/StartScreen.img"));
             WeaponSelect weaponselection("WeaponSelect", Sprite ("rsc/Sprites/Weapons.img"));
 
             
-            int r1 = menu.run(buffer), r2, r3, r4;
+            int r1 = menu.run(buffer), r2, r3, r4, r5;
             buffer.clear();
 
 
@@ -60,27 +60,22 @@ class Game
 
                     fase2.init();
                     r4 = fase2.run(buffer3);
+
+                    if (r4 == Fase::LEVEL_COMPLETE)
+                    {
+                        FaseFinal fasefinal("Fase3", Sprite("rsc/Sprites/Scene.img"));
+
+                        fasefinal.setPaladinWeapon(fase2.getPaladinWeapon());
+                        fasefinal.setPaladinLife(fase2.getPaladinLife());
+                        fasefinal.setPosL(fase2.getPosL());
+                        fasefinal.setPosC(fase2.getPosC());
+
+                        fasefinal.init();
+                        r5 = fasefinal.run(buffer3);
+                    }
                 }
-                
 
             }
-            //fase1.init();
-            //int ret1 = fase1.run(buffer);
-            //if ( ret1 != Fase::GAME_OVER && ret1 != Fase::END_GAME){
-            
-                //buffer.clear();
-                //faseFinal.init();
-                //faseFinal.run(buffer);
-            //}
-            //else
-                //std::cout << "GAME OVER" << std::endl;
-            
-            //std::cout << "Saindo..." << std::endl;
-
-            //FaseLevel1 fase1("Fase1",Sprite("rsc/fase2.img"));
-            //FaseFinal faseFinal("Fase1",Sprite("rsc/title1Gothic.img"));
-
-            
         }
 
 };

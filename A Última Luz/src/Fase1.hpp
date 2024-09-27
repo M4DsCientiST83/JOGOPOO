@@ -34,8 +34,6 @@ class Fase1 : public Fase
 
         int getPosL() const {return posL;}
         int getPosC() const {return posC;} 
-
-        bool colideComBloco() const;
         
     private:
 
